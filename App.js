@@ -4,28 +4,19 @@ import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { getPersonajes } from './lib/rickyMorty';
 import Logo from './components/Logo';
 import { CharacterCard } from './components/CharacterCard';
+import { Main } from './components/Main';
 
 export default function App() {
-  const [personajes, setPersonajes] = useState([]);
-
-  useEffect(() => {
-    getPersonajes().then((data) => {
-      setPersonajes(data);
-      console.log("personajes", data);
-    });
-  }, []);
+  
 
   return (
     <View >
 
       <StatusBar style="light" />
       <Logo style={styles.logo}></Logo>
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.header}> Rick & Morty Universe</Text>
-        {personajes.map((character) => (
-          <CharacterCard key={character.id}  character={character}/>
-        ))}
-      </ScrollView>
+      
+       <Main></Main>
+      
     </View>
   );
 }

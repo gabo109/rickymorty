@@ -1,66 +1,83 @@
-import { StyleSheet,Image, Text, View } from "react-native-web";
+import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
+import { router } from 'expo-router';
 
 export function CharacterCard({ character }) {
-    return (
-        <View style={styles.card} key={character.id}>
-            <Image style={styles.image} source={{ uri: character.image }} />
-            <Text style={styles.name}>{character.name}</Text>
-            <Text style={styles.info}>{character.species} | {character.status}</Text>
-            <Text style={styles.info}>Gender: {character.gender}</Text>
-        </View>
+    // Función para extraer el ID del episodio de la URL
+    const getEpisodeId = (episodeUrl) => {
+        const parts = episodeUrl.split('/');
+        return parts[parts.length - 1];
+    };
+
+    // Función para manejar el toque en la imagen
+    const handleImagePress = () => {
+        if (character.episode && character.episode.length > 0) {
+            const firstEpisodeUrl = character.episode[0];
+            const episodeId = getEpisodeId(firstEpisodeUrl);
+            router.push(`/${episodeId}`);
+        }
+    };
+
+    return(
+       <View style={styles.card} key={character.id}>
+                 <TouchableOpacity onPress={handleImagePress}>
+                     <Image style={styles.image} source={{ uri: character.image}} />
+                 </TouchableOpacity>
+                 <Text style={styles.title}>{character.name}</Text>
+                 <Text style={styles.gender}>{character.gender}</Text>
+                 <Text style={styles.species}>{character.species} | {character.status}</Text>
+                 <Text style={styles.episodeHint}>Toca la imagen para ver el primer episodio</Text>
+               </View> 
     );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#403e3e',
-    paddingVertical: 30,
-    paddingHorizontal: 10,
+    flex: 1,
+    backgroundColor: '#fff',
     alignItems: 'center',
-  },
-  header: {
-    color: '#008cff',
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 30,
-  },
-  card: {
-    backgroundColor: '#787777',
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 20,
-    alignItems: 'center',
-    width: '90%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
-    elevation: 8,
+    justifyContent: 'center',
   },
   image: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    marginBottom: 15,
-    borderWidth: 2,
-    borderColor: '#008cff',
+    width: 100,
+    height: 140,
+    borderRadius: 10,
   },
-  name: {
+  card: {
+    backgroundColor: '#9bacba',
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 20,
+    width: '100%',
+    alignItems: 'center'
+  },
+  title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 5,
+    marginBottom: 10,
+    color: '#fff'
   },
-  info: {
-    fontSize: 14,
-    color: '#aaa',
+  species: {
+    fontSize:16,
+    color: '#fff'
+  },
+  status: {
+    fontSize: 16,
+    color: '#33caff'
+  },
+  gender: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: 'bold'
+  },
+  episodeHint: {
+    fontSize: 12,
+    color: '#ccc',
+    fontStyle: 'italic',
+    marginTop: 8,
+    textAlign: 'center',
   },
   logo: {
-    backgroundColor: '#333',
-    padding: 10,
-    borderWidth: 2,
-    borderRadius: 75,
-    marginBottom: 15,
-    borderColor: '#008cff',
+    backgroundColor: '#9bacba',
+    padding: 20
   }
 });
